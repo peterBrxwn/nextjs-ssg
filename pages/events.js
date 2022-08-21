@@ -30,7 +30,6 @@ export async function getStaticProps() {
 }
 
 export default function Events(eventsData) {
-  console.log(eventsData, eventsData.eventsData.length);
   const eventsArr = eventsData.eventsData;
   const classes = useStyles();
   const [classicModal, setClassicModal] = useState(false);
@@ -66,7 +65,6 @@ export default function Events(eventsData) {
                   {
                     eventsArr.length
                       ? eventsArr.map((event, i) => {
-                        console.log(event.startDate, event.endDate);
                         return (
                           <GridItem xs={12} key={event.id}>
                             <Button

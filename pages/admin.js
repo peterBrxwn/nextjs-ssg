@@ -119,7 +119,6 @@ export default function ProfilePage(props) {
       if (user) {
         setUserId(user.uid);
       } else {
-        console.log(user);
         // alert('Not logged In');
         Router.push("/");
       }
@@ -150,7 +149,6 @@ export default function ProfilePage(props) {
       if (user.type === 'ADMIN') {
         setUserData(user);
       } else {
-        console.log(user);
         auth.signOut();
         alert('Invalid login details');
         Router.push("/");
