@@ -132,25 +132,8 @@ export default function Events(eventsData) {
                                   {event.desc}
                                 </p>
                                 <p>
-                                  <b>Subscribers:</b>
-                                  <br />
-                                  {
-                                    event.subscribers.length
-                                      ? event.subscribers.map((e) => {
-                                        return (
-                                          <Button
-                                            fullWidth
-                                            onClick={() => unsubscribe(e, event.id)}
-                                            color="danger"
-                                            key={e}
-                                          >
-                                            {usersMap[e]}&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <i className="fa fa-times" />
-                                          </Button>
-                                        )
-                                      })
-                                      : <p>No subscribers</p>
-                                  }
+                                  <b>Subscribers Count:</b>
+                                  {event.subscribers.length}
                                 </p>
                               </DialogContent>
                               <DialogActions className={classes.modalFooter}>
