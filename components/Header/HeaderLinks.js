@@ -1,5 +1,6 @@
 /*eslint-disable*/
-import Router from "next/router";
+import { Router, useRouter } from "next/router";
+import Link from "next/link";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 // @material-ui/core components
@@ -21,14 +22,15 @@ export default function HeaderLinks(props) {
   const classes = useStyles();
   const logout = (e) => {
     auth.signOut().then((e) => {
-      Router.push("/login");
+      Router.push("/");
     })
   }
+  const currentRoute = useRouter().pathname;
 
   return (
     <List className={classes.list}>
       {
-        isLoggedIn
+        isLoggedIn && currentRoute !== '/'
           ? <ListItem className={classes.listItem}>
             <Tooltip
               id="logout"
@@ -47,9 +49,24 @@ export default function HeaderLinks(props) {
           </ListItem>
           : null
       }
+      {
+        currentRoute !== '/events'
+          ? <ListItem className={classes.listItem}>
+            <Link href="/events">
+              <Button
+                color="transparent"
+                className={classes.navLink}
+              >
+                <i className={classes.socialIcons + " fa fa-list"}></i>
+                &nbsp;&nbsp;All Events
+              </Button>
+            </Link>
+          </ListItem>
+          : null
+      }
       <ListItem className={classes.listItem}>
         <Tooltip
-          id="instagram-twitter"
+          id="twitter-tooltip"
           title="Follow us on twitter"
           placement={"top"}
           classes={{ tooltip: classes.tooltip }}
@@ -65,7 +82,7 @@ export default function HeaderLinks(props) {
       </ListItem>
       <ListItem className={classes.listItem}>
         <Tooltip
-          id="instagram-facebook"
+          id="facebook-tooltip"
           title="Follow us on facebook"
           placement={"top"}
           classes={{ tooltip: classes.tooltip }}

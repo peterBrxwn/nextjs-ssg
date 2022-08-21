@@ -42,13 +42,14 @@ export default function ProfilePage(props) {
   const [userId, setUserId] = useState('');
   const [userData, setUserData] = useState({ name: 'Loading...' });
   const [loadingEvents, setloadingEvents] = useState(true);
+  const [loadingUnSubEvents, setloadingUnSubEvents] = useState(false);
   useEffect(async () => {
     auth.onAuthStateChanged((user) => {
       if (user) {
         setUserId(user.uid);
       } else {
         // alert('Not logged In');
-        Router.push("/login");
+        Router.push("/");
       }
     });
   }, []);
@@ -58,12 +59,12 @@ export default function ProfilePage(props) {
   useEffect(() => {
     if (userData.email) getEvents();
   }, [userData]);
-  const getEvents = (id) => {
+  const getEvents = () => {
     getDocs(eventCol)
       .then((data) => {
         const eventsList = data.docs.map((item) => {
           const data = item.data();
-          const subscribe = data.subscribers.includes(id);
+          const subscribe = data.subscribers.includes(userId);
           return { ...data, id: item.id, subscribe };
         });
         setEventsArr(eventsList);
@@ -86,15 +87,21 @@ export default function ProfilePage(props) {
       }
     }
 
+    setloadingUnSubEvents(true);
     updateDoc(doc(eventCol, event.id), {
       subscribers: state
         ? arrayUnion(userId)
         : arrayRemove(userId)
     }).then(() => {
-      getEvents(userId);
+      setloadingUnSubEvents(false);
+      getEvents();
       setClassicModal(-1);
       setSubClassicModal(-1);
-    });
+    })
+      .catch(err => {
+        setloadingUnSubEvents(false);
+        alert('Something went wrong.');
+      });
   }
   const max = (date1, date2) => {
     if (date1 > date2) return date1;
@@ -114,8 +121,7 @@ export default function ProfilePage(props) {
         setUserData(user);
       } else {
         auth.signOut();
-        alert('Invalid login details');
-        Router.push("/login");
+        Router.push("/");
       }
     });
   }
@@ -219,19 +225,18 @@ export default function ProfilePage(props) {
                                         </DialogContent>
                                         <DialogActions className={classes.modalFooter}>
                                           {
-                                            !event.subscribe
-                                              ? <Button
-                                                color="success"
-                                                simple
-                                                onClick={() => toggleSub(event, true)}>
-                                                Subscribe
-                                              </Button>
-                                              : <Button
-                                                color="success"
-                                                simple
-                                                onClick={() => toggleSub(event, false)}>
-                                                Unsubscribe
-                                              </Button>
+                                            <Button
+                                              color="success"
+                                              simple
+                                              onClick={() => toggleSub(event, !event.subscribe)}>
+                                              {
+                                                loadingUnSubEvents
+                                                  ? <i className={"fa fa-spinner fa-spin"} />
+                                                  : !event.subscribe
+                                                    ? "Subscribe"
+                                                    : "Unsubscribe"
+                                              }
+                                            </Button>
                                           }
                                           <Button
                                             onClick={() => setClassicModal(-1)}

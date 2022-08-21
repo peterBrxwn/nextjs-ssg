@@ -1,5 +1,7 @@
 /*eslint-disable*/
 import React from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 // nodejs library that concatenates classes
@@ -19,22 +21,41 @@ export default function Footer(props) {
     [classes.footer]: true,
     [classes.footerWhiteFont]: whiteFont
   });
+  const currentRoute = useRouter().pathname;
+
   return (
     <footer className={footerClasses}>
       <div className={classes.container}>
-        <div className={classes.left}>
-          <List className={classes.list}>
-            <ListItem className={classes.inlineBlock}>
-              <a
-                href="#null"
-                onClick={(e) => e.preventDefault()}
-                className={classes.block}
-              >
-                About us
-              </a>
-            </ListItem>
-          </List>
-        </div>
+        {
+          currentRoute !== '/'
+            ? <div className={classes.left}>
+              <List className={classes.list}>
+                <Link href="/">
+                  <ListItem className={classes.inlineBlock}>
+                    <a className={classes.block} >
+                      Home
+                    </a>
+                  </ListItem>
+                </Link>
+              </List>
+            </div>
+            : null
+        }
+        {
+          currentRoute !== '/events'
+            ? <div className={classes.left}>
+              <List className={classes.list}>
+                <Link href="/events">
+                  <ListItem className={classes.inlineBlock}>
+                    <a className={classes.block} >
+                      All Events
+                    </a>
+                  </ListItem>
+                </Link>
+              </List>
+            </div>
+            : null
+        }
         <div className={classes.right}>
           &copy; {1900 + new Date().getYear()}, Mora.
         </div>
