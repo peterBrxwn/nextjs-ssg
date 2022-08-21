@@ -1,5 +1,6 @@
 /*eslint-disable*/
-import { Router, useRouter } from "next/router";
+import Router from "next/router";
+import { useRouter } from "next/router";
 import Link from "next/link";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
