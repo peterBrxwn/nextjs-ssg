@@ -30,6 +30,21 @@ export default function HeaderLinks(props) {
   return (
     <List className={classes.list}>
       {
+        currentRoute !== '/events'
+          ? <ListItem className={classes.listItem}>
+            <Link href="/events">
+              <Button
+                color="transparent"
+                className={classes.navLink}
+              >
+                <i className={classes.socialIcons + " fa fa-list"}></i>
+                &nbsp;&nbsp;All Events
+              </Button>
+            </Link>
+          </ListItem>
+          : null
+      }
+      {
         isLoggedIn && currentRoute !== '/'
           ? <ListItem className={classes.listItem}>
             <Tooltip
@@ -46,21 +61,6 @@ export default function HeaderLinks(props) {
                 <i className={classes.socialIcons + " fa fa-sign-out-alt"} />
               </Button>
             </Tooltip>
-          </ListItem>
-          : null
-      }
-      {
-        currentRoute !== '/events'
-          ? <ListItem className={classes.listItem}>
-            <Link href="/events">
-              <Button
-                color="transparent"
-                className={classes.navLink}
-              >
-                <i className={classes.socialIcons + " fa fa-list"}></i>
-                &nbsp;&nbsp;All Events
-              </Button>
-            </Link>
           </ListItem>
           : null
       }
