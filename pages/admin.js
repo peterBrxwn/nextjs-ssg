@@ -50,6 +50,7 @@ export default function ProfilePage(props) {
   const [durationHrs, setDurationHrs] = useState(0);
   const [durationMins, setDurationMins] = useState(0);
   const [loadingEvents, setloadingEvents] = useState(true);
+  const [loadingAddEvents, setloadingAddEvents] = useState(false);
   const submitEvent = (e) => {
     e.preventDefault();
     let validStartDate = startDate;
@@ -83,6 +84,7 @@ export default function ProfilePage(props) {
     const endDate = startDateMoment
       .add(durationHrs, 'hours')
       .add(durationMins, 'minutes');
+    setloadingAddEvents(true);
     addDoc(eventCol, {
       startDate: validStartDate,
       endDate: endDate.toDate(),
@@ -93,6 +95,7 @@ export default function ProfilePage(props) {
       durationMins: validDurationMins,
       subscribers: [],
     }).then(() => {
+      setloadingAddEvents(false);
       setStartDate('');
       setTitle('');
       setDesc('');
@@ -101,7 +104,11 @@ export default function ProfilePage(props) {
       setDurationMins('');
       e.target.reset();
       getEvents();
-    });
+    })
+      .catch(err => {
+        setloadingAddEvents(false);
+        alert('Something went wrong.');
+      });
   }
   const [eventsArr, setEventsArr] = useState([]);
   const [userId, setUserId] = useState('');
@@ -114,7 +121,7 @@ export default function ProfilePage(props) {
       } else {
         console.log(user);
         // alert('Not logged In');
-        Router.push("/login");
+        Router.push("/");
       }
     });
     fetchAllUserData();
@@ -146,7 +153,7 @@ export default function ProfilePage(props) {
         console.log(user);
         auth.signOut();
         alert('Invalid login details');
-        Router.push("/login");
+        Router.push("/");
       }
     });
   }
@@ -374,7 +381,13 @@ export default function ProfilePage(props) {
                                 size="lg"
                                 type="submit"
                               >
-                                Create
+                                {
+                                  !loadingAddEvents
+                                    ? <span>
+                                      Create
+                                    </span>
+                                    : <i className={"fa fa-spinner fa-spin"} />
+                                }
                               </Button>
                             </form>
                           </GridItem>

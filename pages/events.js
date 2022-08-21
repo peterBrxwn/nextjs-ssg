@@ -1,7 +1,7 @@
 import { useState, forwardRef } from "react";
 import { getEventsData } from '../lib/events';
 import { makeStyles } from "@material-ui/core/styles";
-import Footer from "../components/Footer/Footer1";
+import Footer from "../components/Footer/Footer";
 import Header from "/components/Header/Header.js";
 import Button from "/components/CustomButtons/Button.js";
 import GridContainer from "/components/Grid/GridContainer.js";

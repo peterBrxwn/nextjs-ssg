@@ -19,37 +19,99 @@ import CardBody from "/components/Card/CardBody.js";
 import CardHeader from "/components/Card/CardHeader.js";
 import CardFooter from "/components/Card/CardFooter.js";
 import CustomInput from "/components/CustomInput/CustomInput.js";
-
-import { auth } from "../firebaseConfig";
-
-import styles from "/styles/jss/nextjs-material-kit/pages/loginPage.js";
-
 import {
   signInWithEmailAndPassword,
-} from 'firebase/auth'
+  GoogleAuthProvider,
+  GithubAuthProvider,
+  signInWithPopup,
+  FacebookAuthProvider,
+  TwitterAuthProvider,
+} from 'firebase/auth';
+import { collection, getDoc, doc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../firebaseConfig';
+
+import styles from "/styles/jss/nextjs-material-kit/pages/loginPage.js";
+const googleProvider = new GoogleAuthProvider();
+const githubProvider = new GithubAuthProvider();
+const facebookProvider = new FacebookAuthProvider();
+const twitterProvider = new TwitterAuthProvider();
 
 const useStyles = makeStyles(styles);
 
+const usersCol = collection(db, 'users');
 export default function LoginPage(props) {
   const classes = useStyles();
   const { ...rest } = props;
   const [emailForm, setEmailForm] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const signUp = () => {
+  const [loading, setLoading] = useState(false);
+  const signIn = () => {
+    if (email == '') {
+      alert('Please add email');
+      return;
+    }
+    if (password == '') {
+      alert('Please add password');
+      return;
+    }
+    if (loading) return;
+    setLoading(true);
     signInWithEmailAndPassword(auth, email, password)
-      .then((response) => {
-        console.log(response.user)
-        if (email === 'admin@mora.com') {
+      .then((result) => {
+        fetchUserData(result.user);
+      })
+      .catch(err => {
+        setLoading(false);
+        switch (err.code) {
+          case 'auth/user-not-found':
+          case 'auth/invalid-email':
+          case 'auth/invalid-password':
+            alert('Invalid login details.');
+            break;
+          case 'auth/network-request-failed':
+            alert('Please check network connection.');
+            break;
+          case 'auth/user-disabled':
+            alert('Please contact support.');
+            break;
+          default:
+            alert('Something went wrong.');
+        }
+      });
+  }
+  const signInWithSocialMedia = (provider) => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        fetchUserData(result.user);
+      }).catch((error) => {
+        alert(error.message);
+      });
+  }
+  const fetchUserData = (user) => {
+    getDoc(doc(usersCol, user.uid)).then((data) => {
+      const user = data.data();
+      if (!user) {
+        createUser(user);
+      } else {
+        setLoading(false);
+        if (user.type === 'ADMIN') {
           Router.push('/admin');
         } else {
           Router.push('/user');
         }
-      })
-      .catch(err => {
-        alert('Invalid login details')
-      })
+      }
+    });
+  }
+  const createUser = (user) => {
+    setDoc(doc(usersCol, user.uid), {
+      name: user.name ?? 'Anon',
+      type: 'ADMIN',
+      email: user.email ?? '',
+    }).then(() => {
+      setLoading(false);
+      Router.push('/admin');
+    });
   }
 
   return (
@@ -80,20 +142,30 @@ export default function LoginPage(props) {
                   {
                     !emailForm
                       ? <CardBody>
-                        <Button color="twitter" fullWidth>
+                        <Button color="twitter" fullWidth
+                          onClick={() => signInWithSocialMedia(twitterProvider)}
+                        >
                           <i className={classes.socials + " fab fa-twitter"} />
                           &nbsp;Login with Twitter
                         </Button>
-                        <Button color="facebook" fullWidth>
+                        <Button
+                          color="facebook"
+                          fullWidth
+                          onClick={() => signInWithSocialMedia(facebookProvider)}
+                        >
                           <i className={classes.socials + " fab fa-facebook-square"} />
                           &nbsp;&nbsp;Login with Facebook
                         </Button>
-                        <Button color="google" fullWidth>
+                        <Button color="google" fullWidth
+                          onClick={() => signInWithSocialMedia(googleProvider)}
+                        >
                           <i
                             className={classes.socials + " fab fa-google-plus-g"} />
                           Login with Google
                         </Button>
-                        <Button color="github" fullWidth>
+                        <Button color="github" fullWidth
+                          onClick={() => signInWithSocialMedia(githubProvider)}
+                        >
                           <i className={classes.socials + " fab fa-github"} />
                           &nbsp;Login with Github
                         </Button>
@@ -146,11 +218,18 @@ export default function LoginPage(props) {
                         />
                         <Button
                           fullWidth
-                          onClick={signUp}
+                          onClick={signIn}
                           color="success"
                         >
-                          LOGIN&nbsp;&nbsp;
-                          <i className={"fa fa-sign-in-alt"} />
+                          {
+                            !loading
+                              ? <span>
+                                LOGIN&nbsp;&nbsp;
+                                <i className={"fa fa-sign-in-alt"} />
+                              </span>
+                              : <i className={"fa fa-spinner fa-spin"} />
+                          }
+
                         </Button>
                       </CardBody>
                   }
