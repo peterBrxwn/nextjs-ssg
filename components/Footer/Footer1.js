@@ -7,6 +7,7 @@ import classNames from "classnames";
 // material-ui core components
 import { List, ListItem } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import Link from "next/link";
 
 import styles from "/styles/jss/nextjs-material-kit/components/footerStyle.js";
 
@@ -24,15 +25,33 @@ export default function Footer(props) {
       <div className={classes.container}>
         <div className={classes.left}>
           <List className={classes.list}>
+          <Link href="/login">
             <ListItem className={classes.inlineBlock}>
               <a
-                href="#null"
-                onClick={(e) => e.preventDefault()}
                 className={classes.block}
               >
-                About us
+                Login
               </a>
             </ListItem>
+          </Link>
+          <Link href="/admin">
+            <ListItem className={classes.inlineBlock}>
+              <a
+                className={classes.block}
+              >
+                Admin
+              </a>
+            </ListItem>
+          </Link>
+          <Link href="/user">
+            <ListItem className={classes.inlineBlock}>
+              <a
+                className={classes.block}
+              >
+                User
+              </a>
+            </ListItem>
+          </Link>
           </List>
         </div>
         <div className={classes.right}>
