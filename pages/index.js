@@ -66,7 +66,7 @@ export default function LoginPage(props) {
         switch (err.code) {
           case 'auth/user-not-found':
           case 'auth/invalid-email':
-          case 'auth/invalid-password':
+          case 'auth/wrong-password':
             alert('Invalid login details.');
             break;
           case 'auth/network-request-failed':
