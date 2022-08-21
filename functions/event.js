@@ -15,7 +15,12 @@ app.get("/api/events", async (req, res) => {
     if (!snapshot.size) {
       return res.status(200).json([]);
     }
-    const data = snapshot.docs.map((e) => e.data());
+    const data = snapshot.docs.map((e) => {
+      const event = e.data();
+      event.startDate = event.startDate.toDate();
+      event.endDate = event.endDate.toDate();
+      return event;
+    });
     res.set("Cache-Control", "private, max-age=300");
     return res.status(200).json(data);
   } catch (error) {

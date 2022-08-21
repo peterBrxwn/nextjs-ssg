@@ -34,14 +34,6 @@ export default function Events(eventsData) {
   const eventsArr = eventsData.eventsData;
   const classes = useStyles();
   const [classicModal, setClassicModal] = useState(false);
-  const dateString = (date) => {
-    return 'today'
-    return new Date(date.toDate()).toDateString();
-  }
-  const timeString = (time) => {
-    return 'today'
-    return new Date(date.toDate()).toDateString();
-  }
 
   return (
     <div>
@@ -74,6 +66,7 @@ export default function Events(eventsData) {
                   {
                     eventsArr.length
                       ? eventsArr.map((event, i) => {
+                        console.log(event.startDate, event.endDate);
                         return (
                           <GridItem xs={12} key={event.id}>
                             <Button
@@ -109,9 +102,8 @@ export default function Events(eventsData) {
                                 className={classes.modalBody}
                               >
                                 <p>
-                                  <b>Start:</b>&nbsp;
-                                  {dateString(event.startDate)}:&nbsp;
-                                  {timeString(event.startDate)}.
+                                  <b>Start Date:</b>&nbsp;
+                                  {new Date(event.startDate).toString()}.
                                 </p>
                                 <p>
                                   <b>Duration:</b>&nbsp;
@@ -120,8 +112,7 @@ export default function Events(eventsData) {
                                 </p>
                                 <p>
                                   <b>End Date:</b>&nbsp;
-                                  {dateString(event.endDate)}:&nbsp;
-                                  {timeString(event.endDate)}.
+                                  {new Date(event.endDate).toString()}.
                                 </p>
                                 <p>
                                   <b>Doctor's Name:</b> {event.docName}.
@@ -132,7 +123,7 @@ export default function Events(eventsData) {
                                   {event.desc}
                                 </p>
                                 <p>
-                                  <b>Subscribers Count:</b>
+                                  <b>Subscribers Count:</b>&nbsp;
                                   {event.subscribers.length}
                                 </p>
                               </DialogContent>
