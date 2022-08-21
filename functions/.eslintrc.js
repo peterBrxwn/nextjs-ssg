@@ -9,6 +9,12 @@ module.exports = {
     "google",
   ],
   rules: {
-    quotes: ["error", "double"],
+    "quotes": ["error", "double"],
+    "indent": ["error", 2],
+    "linebreak-style": 0,
+    "object-curly-spacing": 1,
+  },
+  parserOptions: {
+    ecmaVersion: 8,
   },
 };
