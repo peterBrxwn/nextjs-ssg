@@ -9,6 +9,7 @@ import classNames from "classnames";
 // material-ui core components
 import { List, ListItem } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
 
 import styles from "/styles/jss/nextjs-material-kit/components/footerStyle.js";
 
@@ -32,9 +33,9 @@ export default function Footer(props) {
               <List className={classes.list}>
                 <Link href="/">
                   <ListItem className={classes.inlineBlock}>
-                    <a className={classes.block} >
+                    <Button className={classes.block} >
                       Home
-                    </a>
+                    </Button>
                   </ListItem>
                 </Link>
               </List>
@@ -47,9 +48,9 @@ export default function Footer(props) {
               <List className={classes.list}>
                 <Link href="/events">
                   <ListItem className={classes.inlineBlock}>
-                    <a className={classes.block} >
+                    <Button className={classes.block} >
                       All Events
-                    </a>
+                    </Button>
                   </ListItem>
                 </Link>
               </List>
