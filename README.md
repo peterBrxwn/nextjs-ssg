@@ -33,19 +33,19 @@ Mora Medical has noticed that there are a lot of misinformation about “What he
     - Bonus point: Aim for a high Google LightHouse score
     
 
-## ANSWER
+## Reply
 
-Hello!,
+**Link**
 
-I am done with the project.
+https://nextjs-ssr-six.vercel.app
 
-link: nextjs-ssr-six.vercel.app
 Admin Login:
-Email: admin@mora.com
-Pass: moramora
+- Email: admin@mora.com
+- Pass: moramora
+
 User Login:
-Email: user@mora.com
-Pass: moramora
+- Email: user@mora.com
+- Pass: moramora
 
 Admin can create events and users can subscribe to and unsubscribe from the events.
 A user is not allowed to subscribe for overlapping events.
@@ -53,17 +53,21 @@ Admins can cancel any user's subscription.
 
 For new users using social logins, an ADMIN account would be automatically created for them.
 
-SSG: nextjs-ssr-six.vercel.app/events
+**SSG**
+
+https://nextjs-ssr-six.vercel.app/events
 The list of events are generated at build time and statically hosted there.
 
-Tech Stack: NextJs (ReactJs, HTML, CSS, Bootstrap), Javascript, Firebase, Cloud functions, Cloud Firestore.
+**Tech Stack**
+
+Next.js (React.js, HTML, CSS, Bootstrap), Javascript, Firebase, Cloud functions, Cloud Firestore.
 Third Party services utilized: Firebase, Vercel.
 
 If you send me your email, I can forward the Admin and user notifications (Deadline and subscription cancellation by admin) to your device.
 All events are presently stored in cloud firestore. I can push it to any dedicated db of your choosing every month end. All I need is an api.
 
-If I had access to the clients using this app, I would try to find out more on how the would be using the app. With this, I can optimize the site for their use.
-
 Time Spent: ~ 15 hrs (2 days)
 
-[TEST] If a user is subscribed to "Overlap 1", he should not be able to subscribe to "Overlap 2/3/4".
+TEST**
+
+If a user is subscribed to "Overlap 1", he should not be able to subscribe to "Overlap 2/3/4".
